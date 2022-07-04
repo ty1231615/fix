@@ -5,6 +5,7 @@ from command import Command,Handler
 
 
 client = discord.Client()
+defalt = Handler()
 TOKEN = setting.TOKEN
 
 @client.event
@@ -15,14 +16,16 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return
-    if message.channel.id == 878106252478140456:
-        await message.channel.send(message.content)
+    for hdl in Handler.INSTANCE:
+        pass
+    
 
 
 @Command.recv(msg=(True,"message"))
 async def normal(message):
     pass
 
+defalt.attach(normal)
 
 
 client.run(TOKEN)

@@ -1,14 +1,8 @@
 import types
 import discord
-from traitlets import Int
-
-class Handler:
-    def __init__(self) -> None:
-        pass
-    
 
 class Command:
-    def __init__(self,func:types.FunctionType,id:Int,**opt) -> None:
+    def __init__(self,func:types.FunctionType,id:int,**opt) -> None:
         self.__func = func
         self.__id = id
         self.__option = opt
@@ -34,3 +28,23 @@ class Command:
         def deco(func):
             return Command(func,1,**{"msg":msg})
         return deco
+
+class Handler(object):
+    INSTANCE = {}
+    def __init__(self) -> None:
+        self.__id = self.__hash__()
+        self.__cmds = []
+        Handler.INSTANCE.update(
+            {
+                self.__id:self
+            }
+        )
+    @classmethod
+    def getInstance(cls,id):
+        return Handler.INSTANCE.get(id,None)
+    def __del__(self):
+        Handler.INSTANCE.pop(self.__id)
+    def attach(self,cmd:Command):
+        self.__cmds.append(cmd)
+    def getId(self):
+        return self.__id

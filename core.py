@@ -16,14 +16,19 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:
         return
+    atach = {
+        "msg":message
+    }
     for hdl in Handler.INSTANCE:
-        pass
+        handler = Handler.INSTANCE[hdl]
+        for cmd in handler.getCommands():
+            await cmd.run(atach)
     
 
 
 @Command.recv(msg=(True,"message"))
-async def normal(message):
-    pass
+async def normal(message:discord.Message):
+    await message.channel.send(message.content)
 
 defalt.attach(normal)
 

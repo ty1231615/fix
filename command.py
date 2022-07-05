@@ -18,9 +18,9 @@ class Command:
                             }
                         )
         return atached
-    def run(self,atach):
+    async def run(self,atach):
         atach_data = self._ATTACH_OPTION(self.__option,atach)
-        self.__func(**atach_data)
+        await self.__func(**atach_data)
     def getId(self):
         return self.__id
     @classmethod
@@ -46,5 +46,7 @@ class Handler(object):
         Handler.INSTANCE.pop(self.__id)
     def attach(self,cmd:Command):
         self.__cmds.append(cmd)
+    def getCommands(self):
+        return self.__cmds
     def getId(self):
         return self.__id
